@@ -23,7 +23,7 @@ Interact. Mob. Wearable Ubiquitous Technol.* 9, 4, Article 204 (December 2025), 
 ```
 
 ### Additional Resources
-[Paper Link](https://doi.org/10.1145/3770639) | [Preprint PDF]() | [Code](https://github.com/mHealth-Research-Group/paaws-benchmarking)
+[Paper Link](https://doi.org/10.1145/3770639) | [Preprint PDF](https://github.com/mHealth-Research-Group/paaws-study/blob/main/papers/potter_2025_paaws_dataset.pdf) | [Code](https://github.com/mHealth-Research-Group/paaws-benchmarking)
 
 
 ## Towards Practical, Best Practice Video Annotation to Support Human Activity Recognition
@@ -36,7 +36,7 @@ Researchers need ground-truth activity annotations to train and evaluate wearabl
 Tran, H., Potter, V., Mazzucchelli, U., John, D., Intille, S. (2026). Towards Practical, Best Practice Video Annotation to Support Human Activity Recognition. In: Tonkin, E.L., Tourte, G.J.L., Yordanova, K. (eds) Annotation of Real-World Data for Artificial Intelligence Systems. ARDUOUS 2025. Communications in Computer and Information Science, vol 2706. Springer, Cham. https://doi.org/10.1007/978-3-032-09117-8_6
 
 ```bibtex
-@InProceedings{10.1007/978-3-032-09117-8_6,
+@InProceedings{tran_2025_better_annotation_paaws,
 author="Tran, Hoan
 and Potter, Veronika
 and Mazzucchelli, Umberto
@@ -57,4 +57,4 @@ isbn="978-3-032-09117-8"
 
 ### Additional Resources
 
-[Paper Link](https://doi.org/10.1145/3770639) | [Preprint PDF]()
+[Paper Link](https://doi.org/10.1145/3770639) | [Preprint PDF](https://github.com/mHealth-Research-Group/paaws-study/blob/main/papers/tran_2025_better_annotation_paaws.pdf)
