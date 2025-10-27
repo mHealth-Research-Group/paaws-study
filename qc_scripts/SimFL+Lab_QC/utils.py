@@ -185,44 +185,44 @@ PA_LABELS = [
     "Ab_Crunches_Lab",
     "Machine_Leg_Press_Lab",
     "Machine_Chest_Press_Lab",
-    "Sit_Typing_Lab"
+    "Sit_Typing_Lab",
 ]
 
 NON_SPEC_ACTS = [
-        "PA_Type_Too_Complex",
-        "PA_Type_VideoUnavailable/Indecipherable",
-        "Synchronizing_Sensors",
-        "PA_Type_Unlabeled",
-        "Sensor_Sync_Stand_Lab",
-        "Lying_Still",
-        "Walking_Treadmill",
-        "Kneeling_With_Movement",
-        "PA_Type_Other",
-        "Lying_With_Movement",
-        "Puttering_Around",
-        "Sensor_Sync_Walk_Lab",
-        "Doing_Resistance_Training_Other",
-        "Kneeling_Still",
-        "Walking_Slow",
-        "Walking_Fast",
-        "Cycling_Active_Pedaling_Stationary_Bike",
-    ]
+    "PA_Type_Too_Complex",
+    "PA_Type_VideoUnavailable/Indecipherable",
+    "Synchronizing_Sensors",
+    "PA_Type_Unlabeled",
+    "Sensor_Sync_Stand_Lab",
+    "Lying_Still",
+    "Walking_Treadmill",
+    "Kneeling_With_Movement",
+    "PA_Type_Other",
+    "Lying_With_Movement",
+    "Puttering_Around",
+    "Sensor_Sync_Walk_Lab",
+    "Doing_Resistance_Training_Other",
+    "Kneeling_Still",
+    "Walking_Slow",
+    "Walking_Fast",
+    "Cycling_Active_Pedaling_Stationary_Bike",
+]
 
 FL_ACTS = [
-        "Walking_Up_Stairs",
-        "Walking_Down_Stairs",
-        "Standing_Still",
-        "Sitting_Still",
-        "Standing_With_Movement",
-        "Walking",
-        "Sitting_With_Movement",
-    ]
+    "Walking_Up_Stairs",
+    "Walking_Down_Stairs",
+    "Standing_Still",
+    "Sitting_Still",
+    "Standing_With_Movement",
+    "Walking",
+    "Sitting_With_Movement",
+]
 
 EXERCISE_ACTS = [
-        "Ab_Crunches_Lab",
-        "Arm_Curls_Lab",
-        "Machine_Leg_Press_Lab",
-        "Push_Up_Modified_Lab",
-        "Machine_Chest_Press_Lab",
-        "Push_Up_Lab",
-    ]
+    "Ab_Crunches_Lab",
+    "Arm_Curls_Lab",
+    "Machine_Leg_Press_Lab",
+    "Push_Up_Modified_Lab",
+    "Machine_Chest_Press_Lab",
+    "Push_Up_Lab",
+]

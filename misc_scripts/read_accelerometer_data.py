@@ -97,26 +97,22 @@ def add_label_to_actigraph(actigraph, label) -> pd.DataFrame:
     before_string = "Before_Data_Collection"
     after_string = "After_Data_Collection"
 
-    actigraph.loc[actigraph["Timestamp"] < data_start] = (before_string)
-    actigraph.loc[actigraph["Timestamp"] > data_end] = (after_string)
+    actigraph.loc[actigraph["Timestamp"] < data_start] = before_string
+    actigraph.loc[actigraph["Timestamp"] > data_end] = after_string
 
     # Assign the activity label.
     for _, row in label.iterrows():
         start = row["START_TIME"]
         stop = row["STOP_TIME"]
         actigraph.loc[
-            (actigraph["Timestamp"] >= start)
-            & (actigraph["Timestamp"] <= stop),
+            (actigraph["Timestamp"] >= start) & (actigraph["Timestamp"] <= stop),
             "Activity",
         ] = row["ACTIVITY_CLASS"]
 
     return actigraph
 
 
-def data_to_csv(
-        actigraph_path: str,
-        label_path: str,
-        output_path: str) -> None:
+def data_to_csv(actigraph_path: str, label_path: str, output_path: str) -> None:
     """
     Combines actigraph data with activity labels and saves the result as a CSV.
 
@@ -142,7 +138,7 @@ def data_to_csv(
 
     # Read label data and map the activity types to the activity classes.
     label = pd.read_csv(label_path, parse_dates=["START_TIME", "STOP_TIME"])
-    mapping = MAPPING_SCHEMES["lab_fl_5"] #  Default to 5 activity classes.
+    mapping = MAPPING_SCHEMES["lab_fl_5"]  #  Default to 5 activity classes.
     label["ACTIVITY_CLASS"] = [mapping.get(x, None) for x in label["PA_TYPE"]]
 
     actigraph = add_label_to_actigraph(actigraph, label)
@@ -152,11 +148,12 @@ def data_to_csv(
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) != 4:
         print(
-            ("Usage: python read_accelerometer_data.py"
-             "<actigraph_path> <label_path> <output_path>")
+            (
+                "Usage: python read_accelerometer_data.py"
+                "<actigraph_path> <label_path> <output_path>"
+            )
         )
         sys.exit(1)
 

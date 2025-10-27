@@ -22,9 +22,19 @@ Email: potter[dot]v[at]northeastern.edu (potter.v@northeastern.edu)
 import os
 import pandas as pd
 import promptlib
-from utils import LABEL_SETS, PA_TO_POS_MAP, PA_TO_CP_MAP, PA_TO_ES_MAP, \
-    HLB_TO_ES_MAP, HLB_MUST_HAVES, CP_MUST_HAVES, PA_LABELS, NON_SPEC_ACTS, \
-    FL_ACTS, EXERCISE_ACTS
+from utils import (
+    LABEL_SETS,
+    PA_TO_POS_MAP,
+    PA_TO_CP_MAP,
+    PA_TO_ES_MAP,
+    HLB_TO_ES_MAP,
+    HLB_MUST_HAVES,
+    CP_MUST_HAVES,
+    PA_LABELS,
+    NON_SPEC_ACTS,
+    FL_ACTS,
+    EXERCISE_ACTS,
+)
 
 
 def get_and_merge_annotations(path):
@@ -106,11 +116,14 @@ def comp_total_time(labels_df):
             labels_df.iloc[i]["START_TIME"] != labels_df.iloc[i - 1]["STOP_TIME"]
             or labels_df.iloc[i]["PA_Type"] != labels_df.iloc[i - 1]["PA_Type"]
         ):
-            dur = (labels_df.iloc[i]["STOP_TIME"] - labels_df.iloc[i]["START_TIME"]).seconds
+            dur = (
+                labels_df.iloc[i]["STOP_TIME"] - labels_df.iloc[i]["START_TIME"]
+            ).seconds
             n = i + 1
             while (
                 n < labels_df.shape[0] - 1
-                and labels_df.iloc[n]["START_TIME"] == labels_df.iloc[n - 1]["STOP_TIME"]
+                and labels_df.iloc[n]["START_TIME"]
+                == labels_df.iloc[n - 1]["STOP_TIME"]
                 and labels_df.iloc[n]["PA_Type"] == labels_df.iloc[n - 1]["PA_Type"]
             ):
                 dur += (
@@ -120,8 +133,10 @@ def comp_total_time(labels_df):
 
             if labels_df.iloc[i]["PA_Type"] in PA_LABELS:
                 time_df.loc[labels_df.iloc[i]["PA_Type"], "Total_Time"] += dur
-                if dur <= time_df.loc[labels_df.iloc[i]["PA_Type"], "Min_Duration"] \
-                    or time_df.loc[labels_df.iloc[i]["PA_Type"], "Min_Duration"] == 0:
+                if (
+                    dur <= time_df.loc[labels_df.iloc[i]["PA_Type"], "Min_Duration"]
+                    or time_df.loc[labels_df.iloc[i]["PA_Type"], "Min_Duration"] == 0
+                ):
                     time_df.loc[labels_df.iloc[i]["PA_Type"], "Min_Duration"] = dur
                 if dur >= time_df.loc[labels_df.iloc[i]["PA_Type"], "Max_Duration"]:
                     time_df.loc[labels_df.iloc[i]["PA_Type"], "Max_Duration"] = dur
@@ -129,7 +144,10 @@ def comp_total_time(labels_df):
                 time_df.loc[labels_df.iloc[i]["PA_Type"], "Num_Instances"] += 1
 
         # Check if there are any gaps in the annotaiton.
-        if i != 0 and labels_df.iloc[i]["START_TIME"] != labels_df.iloc[i - 1]["STOP_TIME"]:
+        if (
+            i != 0
+            and labels_df.iloc[i]["START_TIME"] != labels_df.iloc[i - 1]["STOP_TIME"]
+        ):
             gap = (
                 labels_df.iloc[i]["START_TIME"] - labels_df.iloc[i - 1]["STOP_TIME"]
             ).seconds
@@ -139,7 +157,6 @@ def comp_total_time(labels_df):
                 gaps.append(
                     f"START_TIME: {labels_df.iloc[i - 1]['STOP_TIME']}, STOP_TIME: {labels_df.iloc[i]['START_TIME']}"
                 )
-
 
     if num_gaps == 0:
         print("\n*** There are NO annotation gaps > 60 s.")
@@ -190,10 +207,18 @@ def find_anomolies(labels_df):
     for act in labels:
         if total_time_df.loc[act, "Num_Instances"] == 0:
             # Check Push_Up or Push_Up_Modified is labeled
-            if act in PA_TO_POS_MAP.keys() and act not in list(anomolies_df["Missing_Acts"]):
-                if act == "Push_Up_Lab" and total_time_df.loc["Push_Up_Modified_Lab", "Num_Instances"] != 0:
+            if act in PA_TO_POS_MAP.keys() and act not in list(
+                anomolies_df["Missing_Acts"]
+            ):
+                if (
+                    act == "Push_Up_Lab"
+                    and total_time_df.loc["Push_Up_Modified_Lab", "Num_Instances"] != 0
+                ):
                     pass
-                elif act == "Push_Up_Modified_Lab" and total_time_df.loc["Push_Up_Lab", "Num_Instances"] != 0:
+                elif (
+                    act == "Push_Up_Modified_Lab"
+                    and total_time_df.loc["Push_Up_Lab", "Num_Instances"] != 0
+                ):
                     pass
                 else:
                     anomolies_df.loc[missing_acts, "Missing_Acts"] = act
@@ -202,17 +227,23 @@ def find_anomolies(labels_df):
         elif act not in FL_ACTS and total_time_df.loc[act, "Total_Time"] != 0:
             time = total_time_df.loc[act, "Total_Time"]
             if act in EXERCISE_ACTS and (time > 90 or time < 20):
-                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = f"{act}, duration: {time}"
+                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = (
+                    f"{act}, duration: {time}"
+                )
                 long_short_acts += 1
             elif "Treadmill" in act and (
                 time > 330
                 or ("Phone" in act or "Conversation" in act and time < 90)
                 or ("Phone" not in act and "Conversation" not in act and time < 190)
             ):
-                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = f"{act}, duration: {time}"
+                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = (
+                    f"{act}, duration: {time}"
+                )
                 long_short_acts += 1
             elif time < 30 or time > 330:
-                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = f"{act}, duration: {time}"
+                anomolies_df.loc[long_short_acts, "Long/Short_Acts"] = (
+                    f"{act}, duration: {time}"
+                )
                 long_short_acts += 1
         elif act in FL_ACTS and (
             total_time_df.loc[act, "Total_Time"] > 2000
@@ -309,7 +340,8 @@ def find_incorrect_mappings(labels_df):
             for elem in labels_df.loc[i]["Contextual_Parameters"].split("|"):
                 if elem == PA_TO_CP_MAP[labels_df.loc[i]["PA_Type"]] or (
                     "Hand/s_In_Pocket" == elem
-                    and PA_TO_CP_MAP[labels_df.loc[i]["PA_Type"]] == "Hand/s_In_Pocket/s"
+                    and PA_TO_CP_MAP[labels_df.loc[i]["PA_Type"]]
+                    == "Hand/s_In_Pocket/s"
                 ):
                     gtg = True
             if not gtg:
@@ -322,7 +354,10 @@ def find_incorrect_mappings(labels_df):
                 ]
         # Check Posture makes sense (with PA Type).
         if labels_df.loc[i]["PA_Type"] in PA_TO_POS_MAP.keys():
-            if labels_df.loc[i]["Posture"] not in PA_TO_POS_MAP[labels_df.loc[i]["PA_Type"]]:
+            if (
+                labels_df.loc[i]["Posture"]
+                not in PA_TO_POS_MAP[labels_df.loc[i]["PA_Type"]]
+            ):
                 map_df.loc[map_df.shape[0]] = [
                     labels_df.loc[i]["START_TIME"],
                     labels_df.loc[i]["STOP_TIME"],
@@ -345,12 +380,15 @@ def find_incorrect_mappings(labels_df):
                     PA_TO_POS_MAP[labels_df.loc[i]["PA_Type"]],
                 ]
 
-         # Check HLB makes sense (with ES).
+        # Check HLB makes sense (with ES).
         if str(labels_df.loc[i]["High_Level_Behavior"]) != "nan":
             hlbs = labels_df.loc[i]["High_Level_Behavior"].split("|")
             for hlb in hlbs:
                 if hlb in HLB_TO_ES_MAP.keys():
-                    if labels_df.loc[i]["Experimental_Situation"] not in HLB_TO_ES_MAP[hlb]:
+                    if (
+                        labels_df.loc[i]["Experimental_Situation"]
+                        not in HLB_TO_ES_MAP[hlb]
+                    ):
                         map_df.loc[map_df.shape[0]] = [
                             labels_df.loc[i]["START_TIME"],
                             labels_df.loc[i]["STOP_TIME"],
@@ -429,6 +467,7 @@ def find_missing_HLB_and_CP(labels_df):
         for lab in missing:
             if str(lab) != "nan":
                 print("-", lab)
+
 
 if __name__ == "__main__":
     # Get path to the labels from annotator running QC.

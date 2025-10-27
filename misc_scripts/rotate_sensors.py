@@ -11,6 +11,7 @@ Email: potter[dot]v[at]northeastern[dot]edu (potter.v@northeastern.edu)
 
 import numpy as np
 
+
 def lab_fl_orientation_augmentation(accel, lab_data=True):
     """
     Augment (rotate) the accelerometer data to match the orientation of the
@@ -36,11 +37,11 @@ def lab_fl_orientation_augmentation(accel, lab_data=True):
     acc = np.copy(accel)
 
     if lab_data:
-        acc[:, 0] = accel[:, 1] #  x -> y.
-        acc[:, 1] = -1 * accel[:, 0] #  y -> -x.
+        acc[:, 0] = accel[:, 1]  #  x -> y.
+        acc[:, 1] = -1 * accel[:, 0]  #  y -> -x.
         acc[:, 2] = accel[:, 2]
     else:
-        acc[:, 0] = -1 * accel[:, 1] #  x -> -y.
-        acc[:, 1] = accel[:, 0] #  y -> x.
+        acc[:, 0] = -1 * accel[:, 1]  #  x -> -y.
+        acc[:, 1] = accel[:, 0]  #  y -> x.
 
     return acc
