@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: PAAWS Study Website
+    url: https://paawsstudy.org
+    about: Visit the official PAAWS Study website for general information and contact details
+  - name: Contributing Guidelines
+    url: https://github.com/umberto/paaws-study/blob/main/CONTRIBUTING.md
+    about: Please read our contributing guidelines before opening an issue
