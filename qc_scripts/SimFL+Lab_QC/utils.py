@@ -1,0 +1,228 @@
+"""
+=========================================
+Static variables and mappings we used in our SimFL+Lab QC process.
+=========================================
+Authors: Veronika Potter, Hoan Tran, and Umberto Mezzucchelli
+Email: potter[dot]v[at]northeastern.edu (potter.v@northeastern.edu)
+"""
+
+LABEL_SETS = [
+    "PA_Type",
+    "Contextual_Parameters",
+    "Posture",
+    "High_Level_Behavior",
+    "Experimental_Situation",
+]
+
+PA_TO_POS_MAP = {
+    "Walking_Up_Stairs": ["In_Position_Upright"],
+    "Washing_Dishes_Lab": ["In_Position_Upright"],
+    "Push_Up_Lab": ["Posture_Other"],
+    "Push_Up_Modified_Lab": ["Posture_Other"],
+    "Walking": ["In_Position_Upright"],
+    "Standing_Still": ["In_Position_Upright"],
+    "Lying_Still": [
+        "Lying_On_Back",
+        "Lying_On_Right_Side",
+        "Lying_On_Stomach",
+        "Lying_On_Left_Side",
+    ],
+    "Treadmill_3mph_Free_Walk_Lab": ["In_Position_Upright"],
+    "Ab_Crunches_Lab": ["Lying_On_Back"],
+    "Standing_With_Movement": ["In_Position_Upright"],
+    "Walking_Treadmill": ["In_Position_Upright"],
+    "Stand_Shelf_Load_Lab": ["In_Position_Upright"],
+    "Stand_Shelf_Unload_Lab": ["In_Position_Upright"],
+    "Lying_On_Left_Side_Lab": ["Lying_On_Left_Side"],
+    "Lying_On_Stomach_Lab": ["Lying_On_Stomach"],
+    "Lying_On_Right_Side_Lab": ["Lying_On_Right_Side"],
+    "Lying_On_Back_Lab": ["Lying_On_Back"],
+    "Sitting_Still": ["In_Position_Sitting", "In_Position_Reclining/Slouching"],
+    "Sitting_With_Movement": ["In_Position_Sitting", "In_Position_Reclining/Slouching"],
+    "Sit_Typing_Lab": ["In_Position_Sitting", "In_Position_Reclining/Slouching"],
+    "Sit_Writing_Lab": ["In_Position_Sitting", "In_Position_Reclining/Slouching"],
+    "Folding_Clothes": ["In_Position_Upright"],
+    "Sit_Recline_Talk_Lab": ["In_Position_Sitting", "In_Position_Reclining/Slouching"],
+    "Cycling_Active_Pedaling_Regular_Bicycle": ["In_Position_Sitting"],
+    "Stationary_Biking_300_Lab": ["In_Position_Sitting"],
+    "Treadmill_2mph_Lab": ["In_Position_Upright"],
+    "Treadmill_3mph_Hands_Pockets_Lab": ["In_Position_Upright"],
+    "Treadmill_3mph_Drink_Lab": ["In_Position_Upright"],
+    "Treadmill_3mph_Briefcase_Lab": ["In_Position_Upright"],
+    "Treadmill_4mph_Lab": ["In_Position_Upright"],
+    "Treadmill_5.5mph_Lab": ["In_Position_Upright"],
+    "Treadmill_3mph_Conversation_Lab": ["In_Position_Upright"],
+    "Treadmill_3mph_Phone_Lab": ["In_Position_Upright"],
+    "Sweeping": ["In_Position_Upright"],
+    "Vacuuming": ["In_Position_Upright"],
+    "Machine_Leg_Press_Lab": ["In_Position_Sitting"],
+    "Machine_Chest_Press_Lab": ["In_Position_Sitting"],
+    "Arm_Curls_Lab": ["In_Position_Upright"],
+    "Walking_Down_Stairs": ["In_Position_Upright"],
+    "Kneeling_With_Movement": ["In_Position_Kneeling"],
+    "Sit_Recline_Web_Browse_Lab": [
+        "In_Position_Sitting",
+        "In_Position_Reclining/Slouching",
+    ],
+    "Playing_Frisbee": ["In_Position_Upright"],
+    "Lying_With_Movement": [
+        "Lying_On_Back",
+        "Lying_On_Right_Side",
+        "Lying_On_Stomach",
+        "Lying_On_Left_Side",
+    ],
+    "Kneeling_Still": ["In_Position_Kneeling"],
+    "Walking_Slow": ["In_Position_Upright"],
+    "Walking_Fast": ["In_Position_Upright"],
+    "Cycling_Active_Pedaling_Stationary_Bike": ["In_Position_Sitting"],
+    "Organizing_Shelf/Cabinet": [
+        "In_Position_Kneeling",
+        "In_Position_Upright",
+        "Posture_Other",
+        "Posture_Too_Complex",
+    ],
+    "Chopping_Food_Lab": ["In_Position_Upright"],
+    "Stand_Conversation_Lab": ["In_Position_Upright"],
+}
+
+PA_TO_CP_MAP = {
+    "Treadmill_3mph_Phone_Lab": "On_Phone_Call",
+    "Treadmill_3mph_Conversation_Lab": "In_Conversation",
+    "Treadmill_3mph_Drink_Lab": "Holding_Drink",
+    "Treadmill_3mph_Briefcase_Lab": "Holding_Bag/Briefcase_Hand_Light",
+    "Treadmill_3mph_Hands_Pockets_Lab": "Hand_In_Pocket",
+    "Sit_Typing_Lab": "Typing_Computer",
+    "Sit_Writing_Lab": "Handwriting",
+    "Stand_Conversation_Lab": "In_Conversation",
+}
+
+PA_TO_ES_MAP = {
+    "Treadmill_3mph_Phone_Lab": "Lab_Indoors",
+    "Vacuuming": "Lab_Indoors",
+}
+
+HLB_TO_ES_MAP = {
+    "Riding_Elevator_Up": "Free_Living",
+    "In_Transit_Passive_Train/Bus/Plane": "Free_Living",
+}
+
+HLB_MUST_HAVES = [
+    "In_Transit_Active",
+    "In_Transit_Passive_Train/Bus/Plane",
+    "Riding_Elevator_Down",
+    "Riding_Elevator_Up",
+    "Riding_Escalator_Up",
+    "Cycling_Regular_Bicycle",
+    "Shopping_Grocery",
+    "Playing_Sports/Games",
+]
+
+CP_MUST_HAVES = [
+    "Carrying_Grocery_Bags_Light",
+    "Holding_Book/Reader",
+    "On_Phone_Call",
+    "Texting/Browsing_Phone",
+    "Located_Indoors",
+    "Located_Outdoors",
+    "In_Conversation",
+]
+
+PA_LABELS = [
+    "Walking_Up_Stairs",
+    "Walking",
+    "Standing_Still",
+    "Lying_Still",
+    "Standing_With_Movement",
+    "Sweeping",
+    "Walking_Treadmill",
+    "Sitting_Still",
+    "Kneeling_With_Movement",
+    "Playing_Frisbee",
+    "PA_Type_Other",
+    "Vacuuming",
+    "Lying_With_Movement",
+    "Puttering_Around",
+    "Doing_Resistance_Training_Other",
+    "Sitting_With_Movement",
+    "Kneeling_Still",
+    "Walking_Slow",
+    "Cycling_Active_Pedaling_Regular_Bicycle",
+    "Walking_Down_Stairs",
+    "Walking_Fast",
+    "PA_Type_Too_Complex",
+    "PA_Type_Video_Unavailable/Indecipherable",
+    "Cycling_Active_Pedaling_Stationary_Bike",
+    "Organizing_Shelf/Cabinet",
+    "PA_Type_Unlabeled",
+    "Folding_Clothes",
+    "Sensor_Sync_Stand_Lab",
+    "Sensor_Sync_Walk_Lab",
+    "Lying_On_Back_Lab",
+    "Stationary_Biking_300_Lab",
+    "Treadmill_2mph_Lab",
+    "Treadmill_3mph_Conversation_Lab",
+    "Treadmill_3mph_Drink_Lab",
+    "Treadmill_3mph_Free_Walk_Lab",
+    "Treadmill_3mph_Briefcase_Lab",
+    "Treadmill_3mph_Hands_Pockets_Lab",
+    "Treadmill_3mph_Phone_Lab",
+    "Treadmill_4mph_Lab",
+    "Treadmill_5.5mph_Lab",
+    "Stand_Shelf_Unload_Lab",
+    "Stand_Shelf_Load_Lab",
+    "Chopping_Food_Lab",
+    "Washing_Dishes_Lab",
+    "Lying_On_Left_Side_Lab",
+    "Lying_On_Stomach_Lab",
+    "Lying_On_Right_Side_Lab",
+    "Sit_Recline_Talk_Lab",
+    "Stand_Conversation_Lab",
+    "Sit_Recline_Web_Browse_Lab",
+    "Sit_Writing_Lab",
+    "Arm_Curls_Lab",
+    "Push_Up_Modified_Lab",
+    "Push_Up_Lab",
+    "Ab_Crunches_Lab",
+    "Machine_Leg_Press_Lab",
+    "Machine_Chest_Press_Lab",
+    "Sit_Typing_Lab",
+]
+
+NON_SPEC_ACTS = [
+    "PA_Type_Too_Complex",
+    "PA_Type_VideoUnavailable/Indecipherable",
+    "Synchronizing_Sensors",
+    "PA_Type_Unlabeled",
+    "Sensor_Sync_Stand_Lab",
+    "Lying_Still",
+    "Walking_Treadmill",
+    "Kneeling_With_Movement",
+    "PA_Type_Other",
+    "Lying_With_Movement",
+    "Puttering_Around",
+    "Sensor_Sync_Walk_Lab",
+    "Doing_Resistance_Training_Other",
+    "Kneeling_Still",
+    "Walking_Slow",
+    "Walking_Fast",
+    "Cycling_Active_Pedaling_Stationary_Bike",
+]
+
+FL_ACTS = [
+    "Walking_Up_Stairs",
+    "Walking_Down_Stairs",
+    "Standing_Still",
+    "Sitting_Still",
+    "Standing_With_Movement",
+    "Walking",
+    "Sitting_With_Movement",
+]
+
+EXERCISE_ACTS = [
+    "Ab_Crunches_Lab",
+    "Arm_Curls_Lab",
+    "Machine_Leg_Press_Lab",
+    "Push_Up_Modified_Lab",
+    "Machine_Chest_Press_Lab",
+    "Push_Up_Lab",
+]
