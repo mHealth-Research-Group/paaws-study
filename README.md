@@ -1,6 +1,6 @@
 # PAAWS Study Resources, Code, and Issue Tracker
 
-This repository serves as a central resource of all things related to the Physical Activity Assessment Using Wearable Sensors (PAAWS) dataset.  If you use any resources discussed in this repository, please [cite our paper](#citation) and [email us](mailto:paawsstudy@gmail.com).
+This repository serves as a central resource of all things related to the Physical Activity Assessment Using Wearable Sensors (PAAWS) dataset. If you use any resources discussed in this repository, please [cite our paper](#citation) and [email us](mailto:paawsstudy@gmail.com).
 
 ## Repository Structure
 
@@ -8,27 +8,33 @@ This repository serves as a central resource of all things related to the Physic
 
 `/qc_scripts`: folder containing scripts run on our annotations as part on our quality control process.
 
-`/papers`: folder containing a running list of papers [our group](https://www.mhealthgroup.org/) has published about collecting, annotating, or using the PAAWS dataset with accompanying pdfs.
+`/papers`: folder containing a running list of papers [our group](https://www.mhealthgroup.org/) has published about collecting, annotating, or using the PAAWS dataset with accompanying PDFs.
 
 ## Data Download
 
 A portion of the PAAWS dataset, the R1 release, is [available for download](https://hdl.handle.net/2047/D20806901). The R1 release includes data collected 252 participants SimFL+Lab protocol (~808GB), 20 participants FL protocol (~111GB), and 15 participants Sleep protocol (~22GB).
 
-More information about the PAAWS R1 dataset can be found in our recent [IMWUT '25 publication](https://doi.org/10.1145/3770639) and the [supplemntal material](https://github.com/mHealth-Research-Group/paaws-benchmarking).
+More information about the PAAWS R1 dataset can be found in our recent [IMWUT '25 publication](https://doi.org/10.1145/3770639) and the [supplemental material](https://github.com/mHealth-Research-Group/paaws-benchmarking).
 
 ### Future Releases
 
 We anticipate additional FL and Sleep data will be available soon. We expect the entire dataset to be available to the public in 2026. This repo will be updated each time we make a new release.
 
-## Annotation Software
+## Software
 
-The PAAWS data was annotated after-the-fact by human annotator, a laborious and time-consuming task. We developed a custom annotation software to help expedite our annotation processs. Our annotation software is [open-source and available to use](https://github.com/mHealth-Research-Group/paaws-annotation-software).
+### Annotation Software
+
+The PAAWS data was annotated after-the-fact by human annotator, a laborious and time-consuming task. We developed a custom annotation software to help expedite our annotation process. Our annotation software is [open-source and available to use](https://github.com/mHealth-Research-Group/paaws-annotation-software).
 
 More about our annotation software can be found in our recent [ARDUOUS '25 publication](https://doi.org/10.1007/978-3-032-09117-8_6).
 
-## Benchamarking the PAAWS R1 dataset
+### Signaligner
 
-To accompany the release of the PAAWS R1 dataset, we provide [trained human activity recongition models](https://drive.google.com/drive/folders/12Xr5isM4o_63GQXUstmpLAYKuu1uvIc9?usp=sharing) for future researchers to use.
+We developed [Signaligner-Pro](https://signaligner.org/), an interactive tool for algorithm-assisted exploration and annotation of raw accelerometer data. 
+
+## Benchmarking the PAAWS R1 dataset
+
+To accompany the release of the PAAWS R1 dataset, we provide [trained human activity recognition models](https://drive.google.com/drive/folders/12Xr5isM4o_63GQXUstmpLAYKuu1uvIc9?usp=sharing) for future researchers to use.
 
 More about benchmarking the PAAWS R1 dataset can be found in the projects GitHub repository: [github.com/mHealth-Research-Group/paaws-benchmarking](https://github.com/mHealth-Research-Group/paaws-benchmarking).
 
