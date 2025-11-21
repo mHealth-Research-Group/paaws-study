@@ -21,8 +21,6 @@ To run this script on the provided sample data, run
 python read_accelerometer_data.py PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv misc_scripts/test.csv
 ```
 
-
-
 ## Running `rotate_sensors.py`
 
 `rotate_sensors.py` is not a standalone script and its contents *should be used in your preprocessing pipeline only if you are using Ankle or Waist data from both the SimFL+Lab and FL datasets*. We recommend augmenting the data as soon as it is read from the raw data file. The following code snippet demonstrates how to use the `lab_fl_orientation_augmentation()` function in `rotate_sensors.py`.
