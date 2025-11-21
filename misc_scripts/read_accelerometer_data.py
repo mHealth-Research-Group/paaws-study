@@ -2,7 +2,7 @@
 =========================================
 Sample code to read the accelerometer data and labels into a single dataframe.
 =========================================
-Authors: Hoan Tran and Umberto Mezzucchelli
+Authors: Hoan Tran and Umberto Mazzucchelli
 Email: tran[dot]hoan1[at]northeastern[dot]edu (train.hoan1@northeastern.edu)
 """
 
@@ -92,13 +92,13 @@ def add_label_to_actigraph(actigraph, label) -> pd.DataFrame:
     actigraph["Activity"] = None
 
     # Denote data before and after data collection.
-    data_start = label["START_TIME"].iloc[0], "Activity"
-    data_end = label["STOP_TIME"].iloc[-1], "Activity"
+    data_start = label["START_TIME"].iloc[0]
+    data_end = label["STOP_TIME"].iloc[-1]
     before_string = "Before_Data_Collection"
     after_string = "After_Data_Collection"
 
-    actigraph.loc[actigraph["Timestamp"] < data_start] = before_string
-    actigraph.loc[actigraph["Timestamp"] > data_end] = after_string
+    actigraph.loc[actigraph["Timestamp"] < data_start, "Activity"] = before_string
+    actigraph.loc[actigraph["Timestamp"] > data_end, "Activity"] = after_string
 
     # Assign the activity label.
     for _, row in label.iterrows():
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 4:
         print(
             (
-                "Usage: python read_accelerometer_data.py"
+                "Usage: python read_accelerometer_data.py "
                 "<actigraph_path> <label_path> <output_path>"
             )
         )
@@ -162,4 +162,8 @@ if __name__ == "__main__":
     label_path = sys.argv[2]
     output_path = sys.argv[3]
 
+    print("***** Reading and processing data. This may take a few minutes. *****")
+
     data_to_csv(actigraph_path, label_path, output_path)
+
+    print(f"***** Data saved to {output_path}. *****")
