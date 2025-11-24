@@ -11,7 +11,6 @@ Email: potter[dot]v[at]northeastern[dot]edu (potter.v@northeastern.edu)
 
 import numpy as np
 
-
 def lab_fl_orientation_augmentation(accel, lab_data=True):
     """
     Augment (rotate) the accelerometer data to match the orientation of the
