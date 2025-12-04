@@ -1,6 +1,6 @@
 # PAAWS Study Resources, Code, and Issue Tracker
 
-This repository serves as a central resource of all things related to the Physical Activity Assessment Using Wearable Sensors (PAAWS) dataset. If you use any resources discussed in this repository, please [cite our paper](#citation) and <a href="mailto:paawsstudy@gmail.com" target="_blank">email us</a>.
+This repository serves as a central resource of all things related to the Physical Activity Assessment Using Wearable Sensors (PAAWS) dataset. If you use any resources discussed in this repository, please [cite our paper](#citation) and <a href="mailto:paawsstudy@gmail.com" target="_blank">email us</a>. For more information about the PAAWS study, please see <a href="https://www.paawsstudy.org/" target="_blank">the PAAWS website</a>.
 
 ## Repository Structure
 
