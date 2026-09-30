@@ -10,6 +10,8 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 `rotate_sensors.py`: script to rotate sensor data to ensure all data is in the same orientation across the SimFL+Lab and FL protocols. **NOTE**: this script should only be used with the ankle (FL: RightAnkle, SimFL+Lab: RightAnkleLateral) and waist (FL: RightWaist, SimFL+Lab: RightWaistAnterior) data.
 
+`PAAWS_SimFL_Lab/`, `PAAWS_FreeLiving.zip`, `PAAWS_Sleep.zip`: example data for DS_10 used in the commands below. `PAAWS_FreeLiving` and `PAAWS_Sleep` are zipped due to their large file size; to use them, unzip them as is in this folder.
+
 ## Running `read_accelerometer_data.py`
 `read_accelerometer_data.py` is a standalone Python script and should be run from the command line with the following arguments:
 
