@@ -8,7 +8,7 @@ Email: tran[dot]hoan1[at]northeastern[dot]edu (train.hoan1@northeastern.edu)
 
 import argparse
 import pandas as pd
-from typing import Tuple
+from typing import List, Tuple
 from datetime import datetime, timedelta
 from utils import MAPPING_SCHEMES
 
@@ -125,7 +125,10 @@ def add_label_to_actigraph(actigraph, label, sleep: bool = False) -> pd.DataFram
 
 
 def data_to_csv(
-    actigraph_path: str, label_path: str, output_path: str, sleep_path: str = None
+    actigraph_path: str,
+    label_path: str,
+    output_path: str,
+    sleep_paths: List[str] = None,
 ) -> None:
     """
     Combines actigraph data with activity labels and saves the result as a CSV.
@@ -141,9 +144,9 @@ def data_to_csv(
     output_path : string
         Path where the combined data should be saved as a CSV file.
 
-    sleep_path : string, optional
-        Path to the sleep scored events file. If given, the sleep stages are
-        added to a 'Sleep_Stage' column.
+    sleep_paths : list of strings, optional
+        Paths to the sleep scored events files (e.g., one per night). If given,
+        the sleep stages are added to a 'Sleep_Stage' column.
 
     Returns
     ----------
@@ -162,8 +165,12 @@ def data_to_csv(
     actigraph = add_label_to_actigraph(actigraph, label)
 
     # Read sleep scored data and retrieve only sleep stages of interest.
-    if sleep_path is not None:
-        sleep_label = pd.read_csv(sleep_path, parse_dates=["Start Time", "End Time"])
+    if sleep_paths:
+        # Combine all nights so they are labeled in a single pass.
+        sleep_label = pd.concat(
+            [pd.read_csv(p, parse_dates=["Start Time", "End Time"]) for p in sleep_paths],
+            ignore_index=True,
+        )
         mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages.
         sleep_label["SLEEP_STAGE"] = [mapping.get(x, None) for x in sleep_label["Event"]]
 
@@ -186,8 +193,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-s",
         "--sleep_path",
+        nargs="+",
         default=None,
-        help="(Optional) Path to the sleep scored events file.",
+        help="(Optional) Path(s) to the sleep scored events file(s), e.g., one per night.",
     )
 
     # Read command line arguments.

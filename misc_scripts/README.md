@@ -10,13 +10,11 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 `rotate_sensors.py`: script to rotate sensor data to ensure all data is in the same orientation across the SimFL+Lab and FL protocols. **NOTE**: this script should only be used with the ankle (FL: RightAnkle, SimFL+Lab: RightAnkleLateral) and waist (FL: RightWaist, SimFL+Lab: RightWaistAnterior) data.
 
-`PAAWS_SimFL_Lab/`, `PAAWS_FreeLiving.zip`, `PAAWS_Sleep.zip`: example data for DS_10 used in the commands below. `PAAWS_FreeLiving` and `PAAWS_Sleep` are zipped due to their large file size; to use them, unzip them as is in this folder.
-
 ## Running `read_accelerometer_data.py`
 `read_accelerometer_data.py` is a standalone Python script and should be run from the command line with the following arguments:
 
 ```bash
-python read_accelerometer_data.py [path_to_accel] [path_to_labels] [output_path] [-s path_to_sleep_labels]
+python read_accelerometer_data.py [path_to_accel] [path_to_labels] [output_path] [-s path_to_sleep_labels ...]
 ```
 
 To run this script on the provided sample data from this folder, run
@@ -25,10 +23,10 @@ To run this script on the provided sample data from this folder, run
 python read_accelerometer_data.py PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv test.csv
 ```
 
-The optional `-s` (`--sleep_path`) argument takes a sleep scored events file and adds the sleep stages (Wake, N1, N2, N3, REM) to a `Sleep_Stage` column. For example, to label the FL data with both the activity labels and the sleep stages, run
+The optional `-s` (`--sleep_path`) argument takes one or more sleep scored events files (e.g., one per night) and adds the sleep stages (Wake, N1, N2, N3, REM) to a `Sleep_Stage` column. For example, to label the FL data with both the activity labels and the sleep stages for DS_10 and assuming PAAWS_Sleep and PAAWS_FreeLiving datasets have been downloaed to this folder, run
 
 ```bash
-python read_accelerometer_data.py PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv test.csv -s PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
+python read_accelerometer_data.py PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv test.csv -s PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
 ```
 
 ## Running `read_psg_data.py`
@@ -38,7 +36,7 @@ python read_accelerometer_data.py PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWr
 python read_psg_data.py [path_to_edf] [path_to_sleep_labels] [output_dir] [-c channel_1 channel_2 ...]
 ```
 
-To run this script on the provided sample data from this folder, run
+To run this script to load the psg data for DS_10 Night 2 and assuming the PAAWS_Sleep data have been downloaded to this folder, run
 
 ```bash
 python read_psg_data.py PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv psg_output
