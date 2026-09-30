@@ -6,7 +6,7 @@ Authors: Hoan Tran and Umberto Mazzucchelli
 Email: tran[dot]hoan1[at]northeastern[dot]edu (train.hoan1@northeastern.edu)
 """
 
-import sys
+import argparse
 import pandas as pd
 from typing import Tuple
 from datetime import datetime, timedelta
@@ -69,10 +69,10 @@ def read_data(file: str, agd: bool = False) -> Tuple[datetime, pd.DataFrame]:
     return start, df
 
 
-def add_label_to_actigraph(actigraph, label) -> pd.DataFrame:
+def add_label_to_actigraph(actigraph, label, sleep: bool = False) -> pd.DataFrame:
     """
-    Adds activity labels to the actigraph data based on the time intervals
-    in the label data.
+    Adds activity (or sleep stage) labels to the actigraph data based on the
+    time intervals in the label data.
 
     Parameters
     ----------
@@ -82,37 +82,51 @@ def add_label_to_actigraph(actigraph, label) -> pd.DataFrame:
     label : pd.DataFrame
         DataFrame containing labeled activity data with start and stop times.
 
+    sleep : bool
+        If True, the label data is a sleep scored events file and the sleep
+        stages are added to a 'Sleep_Stage' column.
+
     Returns
     ----------
     actigraph : pd.DataFrame
-        DataFrame with added 'Activity' column containing the activity class
-        from the labeled data.
+        DataFrame with added 'Activity' (or 'Sleep_Stage') column containing
+        the activity class (or sleep stage) from the labeled data.
     """
 
-    actigraph["Activity"] = None
+    # Column names (start, stop, class, output) for the activity and sleep labels.
+    label_columns = {
+        False: ("START_TIME", "STOP_TIME", "ACTIVITY_CLASS", "Activity"),
+        True: ("Start Time", "End Time", "SLEEP_STAGE", "Sleep_Stage"),
+    }
+    start_col, stop_col, class_col, out_col = label_columns[sleep]
+
+    label = label.sort_values(start_col).reset_index(drop=True)
+    actigraph[out_col] = None
 
     # Denote data before and after data collection.
-    data_start = label["START_TIME"].iloc[0]
-    data_end = label["STOP_TIME"].iloc[-1]
+    data_start = label[start_col].iloc[0]
+    data_end = label[stop_col].iloc[-1]
     before_string = "Before_Data_Collection"
     after_string = "After_Data_Collection"
 
-    actigraph.loc[actigraph["Timestamp"] < data_start, "Activity"] = before_string
-    actigraph.loc[actigraph["Timestamp"] > data_end, "Activity"] = after_string
+    actigraph.loc[actigraph["Timestamp"] < data_start, out_col] = before_string
+    actigraph.loc[actigraph["Timestamp"] > data_end, out_col] = after_string
 
     # Assign the activity label.
     for _, row in label.iterrows():
-        start = row["START_TIME"]
-        stop = row["STOP_TIME"]
+        start = row[start_col]
+        stop = row[stop_col]
         actigraph.loc[
             (actigraph["Timestamp"] >= start) & (actigraph["Timestamp"] <= stop),
-            "Activity",
-        ] = row["ACTIVITY_CLASS"]
+            out_col,
+        ] = row[class_col]
 
     return actigraph
 
 
-def data_to_csv(actigraph_path: str, label_path: str, output_path: str) -> None:
+def data_to_csv(
+    actigraph_path: str, label_path: str, output_path: str, sleep_path: str = None
+) -> None:
     """
     Combines actigraph data with activity labels and saves the result as a CSV.
 
@@ -126,6 +140,10 @@ def data_to_csv(actigraph_path: str, label_path: str, output_path: str) -> None:
 
     output_path : string
         Path where the combined data should be saved as a CSV file.
+
+    sleep_path : string, optional
+        Path to the sleep scored events file. If given, the sleep stages are
+        added to a 'Sleep_Stage' column.
 
     Returns
     ----------
@@ -143,27 +161,40 @@ def data_to_csv(actigraph_path: str, label_path: str, output_path: str) -> None:
 
     actigraph = add_label_to_actigraph(actigraph, label)
 
+    # Read sleep scored data and retrieve only sleep stages of interest.
+    if sleep_path is not None:
+        sleep_label = pd.read_csv(sleep_path, parse_dates=["Start Time", "End Time"])
+        mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages.
+        sleep_label["SLEEP_STAGE"] = [mapping.get(x, None) for x in sleep_label["Event"]]
+
+        # Remove non-stage events (e.g., snores, arousals) that overlap the stages.
+        sleep_label = sleep_label.dropna(subset=["SLEEP_STAGE"])
+
+        actigraph = add_label_to_actigraph(actigraph, sleep_label, sleep=True)
+
     # Save the merged data to a CSV file.
     actigraph.to_csv(output_path, index=False)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print(
-            (
-                "Usage: python read_accelerometer_data.py "
-                "<actigraph_path> <label_path> <output_path>"
-            )
-        )
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Read actigraph data and merge it with the label data."
+    )
+    parser.add_argument("actigraph_path", help="Path to the actigraph file.")
+    parser.add_argument("label_path", help="Path to the label file.")
+    parser.add_argument("output_path", help="Path to save the merged CSV file.")
+    parser.add_argument(
+        "-s",
+        "--sleep_path",
+        default=None,
+        help="(Optional) Path to the sleep scored events file.",
+    )
 
     # Read command line arguments.
-    actigraph_path = sys.argv[1]
-    label_path = sys.argv[2]
-    output_path = sys.argv[3]
+    args = parser.parse_args()
 
     print("***** Reading and processing data. This may take a few minutes. *****")
 
-    data_to_csv(actigraph_path, label_path, output_path)
+    data_to_csv(args.actigraph_path, args.label_path, args.output_path, args.sleep_path)
 
-    print(f"***** Data saved to {output_path}. *****")
+    print(f"***** Data saved to {args.output_path}. *****")

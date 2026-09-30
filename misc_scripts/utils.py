@@ -239,4 +239,23 @@ MAPPING_SCHEMES = {
         'Flossing_Teeth': 'Grooming',
         'Blowdrying_Hair': 'Grooming',
     },
+
+    # Mapping with 5 sleep stages, used for Sleep data only.
+    "sleep_5": {
+        "Wake": "Wake",
+        "N1": "N1",
+        "N2": "N2",
+        "N3": "N3",
+        "REM": "REM",
+    },
+
+    # Mapping with 2 classes (sleep vs. wake), used for Sleep data only.
+    "sleep_2": {
+        "Wake": "Wake",
+
+        "N1": "Sleep",
+        "N2": "Sleep",
+        "N3": "Sleep",
+        "REM": "Sleep",
+    },
 }

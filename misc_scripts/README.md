@@ -12,13 +12,19 @@ We provide two scripts to help with PAAWS data preprocessing: one for merging th
 `read_accelerometer_data.py` is a standalone Python script and should be run from the command line with the following arguments:
 
 ```bash
-python read_accelerometer_data.py [path_to_accel] [path_to_labels] [output_path]
+python read_accelerometer_data.py [path_to_accel] [path_to_labels] [output_path] [-s path_to_sleep_labels]
 ```
 
 To run this script on the provided sample data, run
 
 ```bash
 python read_accelerometer_data.py PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv misc_scripts/test.csv
+```
+
+The optional `-s` (`--sleep_path`) argument takes a sleep scored events file and adds the sleep stages (Wake, N1, N2, N3, REM) to a `Sleep_Stage` column. For example, to label the FL data with both the activity labels and the sleep stages, run
+
+```bash
+python read_accelerometer_data.py PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv misc_scripts/test.csv -s PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
 ```
 
 ## Running `rotate_sensors.py`
