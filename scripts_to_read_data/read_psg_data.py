@@ -1,7 +1,7 @@
 """
 =========================================
-Sample code to read the psg data and labels into dataframes, one per sampling
-rate. Requires pyedflib >=0.1.32
+Sample code to read the psg data and labels into dataframes, one per channel.
+Requires pyedflib >=0.1.32
 
 Channels (with sampling rate) in the psg files, as listed in DS_10 Night 2.
 Use these names with the -c/--channels option:
@@ -30,6 +30,7 @@ Email: tran[dot]hoan1[at]northeastern[dot]edu
 
 import argparse
 import os
+import re
 import numpy as np
 import pandas as pd
 import pyedflib
@@ -40,10 +41,10 @@ from utils import MAPPING_SCHEMES
 
 def read_data(
     file: str, channels: List[str] = None
-) -> Tuple[datetime, Dict[float, pd.DataFrame]]:
+) -> Tuple[datetime, Dict[str, pd.DataFrame]]:
     """
     Reads the psg (EDF) file and returns the starting timestamp and one
-    DataFrame per sampling rate.
+    DataFrame per channel.
 
     Parameters
     ----------
@@ -59,14 +60,15 @@ def read_data(
         The starting timestamp.
 
     data : dict of pd.DataFrame
-        The psg data, keyed by sampling rate (Hz). Each DataFrame has a
-        'Timestamp' column followed by one column per channel.
+        The psg data, keyed by channel name. Each DataFrame has a 'Timestamp'
+        column followed by a column with the channel's data.
     """
 
     with pyedflib.EdfReader(file) as f:
         start = f.getStartdatetime()
         labels = f.getSignalLabels()
         rates = f.getSampleFrequencies()
+        n_samples = f.getNSamples()
 
         # Select the channels to read.
         if channels is None:
@@ -77,23 +79,14 @@ def read_data(
                 raise ValueError(f"Channels not found in {file}: {missing}")
             indices = [labels.index(c) for c in channels]
 
-        # Group the channels by sampling rate.
-        groups = {}
-        for i in indices:
-            groups.setdefault(rates[i], []).append(i)
-
         data = {}
-        for rate, group in sorted(groups.items(), reverse=True):
-            n_samples = f.getNSamples()[group[0]]
-
+        for i in indices:
             # Add timestamps for each data point to the dataframe.
-            offsets = pd.to_timedelta(np.arange(n_samples) / rate, unit="s")
+            offsets = pd.to_timedelta(np.arange(n_samples[i]) / rates[i], unit="s")
             df = pd.DataFrame({"Timestamp": pd.Timestamp(start) + offsets})
+            df[labels[i]] = f.readSignal(i)
 
-            for i in group:
-                df[labels[i]] = f.readSignal(i)
-
-            data[rate] = df
+            data[labels[i]] = df
 
     return start, data
 
@@ -148,7 +141,7 @@ def data_to_csv(
 ) -> None:
     """
     Combines psg data with sleep stage labels and saves the result as one CSV
-    per sampling rate.
+    per channel.
 
     Parameters
     ----------
@@ -160,7 +153,7 @@ def data_to_csv(
 
     output_dir : string
         Directory where the CSV files should be saved. Each file is named
-        after the EDF file and the sampling rate (e.g., '<name>_200Hz.csv').
+        after the EDF file and the channel (e.g., '<name>_X_Axis.csv').
 
     channels : list of strings, optional
         Names of the channels to save. If None, save all channels.
@@ -182,15 +175,18 @@ def data_to_csv(
     # Remove non-stage events (e.g., snores, arousals) that overlap the stages.
     sleep_label = sleep_label.dropna(subset=["SLEEP_STAGE"])
 
-    # Save the merged data to one CSV file per sampling rate.
+    # Save the merged data to one CSV file per channel.
     os.makedirs(output_dir, exist_ok=True)
     name = os.path.splitext(os.path.basename(edf_path))[0]
 
-    for rate, psg in data.items():
+    for channel, psg in data.items():
         psg = add_sleep_label(psg, sleep_label)
-        output_path = os.path.join(output_dir, f"{name}_{rate:g}Hz.csv")
+
+        # Replace characters that are not safe in file names (e.g., spaces).
+        channel_name = re.sub(r"[^A-Za-z0-9-]+", "_", channel).strip("_")
+        output_path = os.path.join(output_dir, f"{name}_{channel_name}.csv")
         psg.to_csv(output_path, index=False)
-        print(f"Saved {len(psg.columns) - 2} channel(s) at {rate:g} Hz to {output_path}.")
+        print(f"Saved channel '{channel}' to {output_path}.")
 
 
 if __name__ == "__main__":
