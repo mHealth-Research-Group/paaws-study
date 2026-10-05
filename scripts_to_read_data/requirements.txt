@@ -1,0 +1,3 @@
+numpy
+pandas
+pyedflib>=0.1.32
