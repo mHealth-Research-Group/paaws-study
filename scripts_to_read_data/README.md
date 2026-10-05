@@ -4,7 +4,7 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 ## Repository Structure
 
-`read_IMU_data.py`: script to read ActiGraph and label data and merge them into one dataframe of labeled ActiGraph data and timestamps. **NOTE**: this script can be run with any ActiGraph data (e.g., accelerometer, IMU, or HR data) in the PAAWS dataset.
+`read_actigraph_data.py`: script to read ActiGraph and label data and merge them into one dataframe of labeled ActiGraph data and timestamps. **NOTE**: this script can be run with any ActiGraph data (e.g., accelerometer, IMU, or HR data) in the PAAWS dataset.
 
 `read_psg_data.py`: script to read PSG (EDF) and sleep scored events data and merge them into labeled PSG data and timestamps, saved as one CSV per channel. **NOTE**: requires `pyedflib>=0.1.32`.
 
@@ -22,22 +22,24 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 
 ## Reading IMU data with activity label and sleep stages files
-To read IMU data and to use the activity labels or sleep stages label, users can use the script `read_IMU_data.py`:
+We provide `read_actigraph_data.py`, which is a standalone Python script that reads raw ActiGraph `.csv` files (e.g., accelerometer, IMU, or HR data), the associated activity label file, and optionally the sleep scored events files. This script writes raw data with timestamp, activity labels, and sleep stages into one CSV file.
+
+This script should be run from the command line with the following arguments:
 
 ```bash
-python read_IMU_data.py [path_to_accel] [path_to_labels] [output_path] [-s path_to_sleep_labels ...]
+python read_actigraph_data.py [path_to_accel] [path_to_labels] [output_path] [-s path_to_sleep_labels ...]
 ```
 
 For example, to read in DS_10's left wrist top accelerometer sensor and the corresponding activity label file, and then write the raw data to `IMU.csv` with columns `Accelerometer X`, `Accelerometer Y`, `Accelerometer Z`, `Timestamp`, and `Activity`, run:
 
 ```bash
-python read_IMU_data.py example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv example_data/PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv IMU.csv
+python read_actigraph_data.py example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv example_data/PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv IMU.csv
 ```
 
 For participants with scored sleep stages, users need to pass the optional `-s` (`--sleep_path`) argument. This argument takes one or more sleep scored events files (e.g., one per night) and adds the sleep stages (Wake, N1, N2, N3, REM) to a `Sleep_Stage` column. For example, read DS_10's left wrist data with the activity label as well as sleep stages, and then write to `IMU.csv` (with columns `Accelerometer X`, `Accelerometer Y`, `Accelerometer Z`, `Timestamp`, `Activity`, and `Sleep_Stage`), run
 
 ```bash
-python read_IMU_data.py example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv example_data/PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv IMU.csv -s example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
+python read_actigraph_data.py example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv example_data/PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv IMU.csv -s example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
 ```
 
 ## Reading PSG data with the corresponding sleep stage label
