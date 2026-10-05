@@ -4,7 +4,7 @@ This repository serves as a central resource of all things related to the Physic
 
 ## Repository Structure
 
-`/misc_scripts`: folder containing sample scripts to load raw accelerometer data into a DataFrame with timestamps and activity labels (<a href="https://github.com/mHealth-Research-Group/paaws-study/blob/main/misc_scripts/read_accelerometer_data.py" target="_blank">`read_accelerometer_data.py`</a>) and to rotate ankle and waist sensor data so the data is in the same orientation across the SimFL+Lab and FL protocols (<a href="https://github.com/mHealth-Research-Group/paaws-study/blob/main/misc_scripts/rotate_sensors.py" target="_blank">`rotate_sensors.py`</a>).
+`/misc_scripts`: folder containing sample scripts to load raw accelerometer data into a DataFrame with timestamps and activity labels (<a href="https://github.com/mHealth-Research-Group/paaws-study/blob/main/misc_scripts/read_IMU_data.py" target="_blank">`read_IMU_data.py`</a>) and to rotate ankle and waist sensor data so the data is in the same orientation across the SimFL+Lab and FL protocols (<a href="https://github.com/mHealth-Research-Group/paaws-study/blob/main/misc_scripts/rotate_sensors.py" target="_blank">`rotate_sensors.py`</a>).
 
 `/qc_scripts`: folder containing scripts run on our annotations as part on our quality control process.
 
