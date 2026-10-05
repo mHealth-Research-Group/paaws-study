@@ -10,11 +10,11 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 `rotate_sensors.py`: script to rotate sensor data to ensure all data is in the same orientation across the SimFL+Lab and FL protocols. **NOTE**: this script should only be used with the ankle (FL: RightAnkle, SimFL+Lab: RightAnkleLateral) and waist (FL: RightWaist, SimFL+Lab: RightWaistAnterior) data.
 
-`PAAWS_SimFL_Lab/`: sample SimFL+Lab data for DS_10 used to demonstrate how the scripts work.
+`example_data/PAAWS_SimFL_Lab/`: sample SimFL+Lab data for DS_10 used to demonstrate how the scripts work.
 
-`PAAWS_FreeLiving/`: sample Free-Living data for DS_10 used to demonstrate how the scripts work.
+`example_data/PAAWS_FreeLiving/`: sample Free-Living data for DS_10 used to demonstrate how the scripts work.
 
-`PAAWS_Sleep/`: sample Sleep data for DS_10 used to demonstrate how the scripts work.
+`example_data/PAAWS_Sleep/`: sample Sleep data for DS_10 used to demonstrate how the scripts work.
 
 **NOTE**: the `.zip` files in these folders were compressed with bzip2. On Windows, users need a third-party tool like [7-Zip](https://www.7-zip.org/) to extract them. macOS and Linux users can use the native `unzip`.
 
@@ -29,13 +29,13 @@ python read_accelerometer_data.py [path_to_accel] [path_to_labels] [output_path]
 To run this script on the provided sample data from this folder, run
 
 ```bash
-python read_accelerometer_data.py PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv test.csv
+python read_accelerometer_data.py example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv example_data/PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv test.csv
 ```
 
 The optional `-s` (`--sleep_path`) argument takes one or more sleep scored events files (e.g., one per night) and adds the sleep stages (Wake, N1, N2, N3, REM) to a `Sleep_Stage` column. For example, to label the FL data with both the activity labels and the sleep stages for DS_10, run
 
 ```bash
-python read_accelerometer_data.py PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv test.csv -s PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
+python read_accelerometer_data.py example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv example_data/PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv test.csv -s example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
 ```
 
 ## Running `read_psg_data.py`
@@ -48,13 +48,13 @@ python read_psg_data.py [path_to_edf] [path_to_sleep_labels] [output_dir] [-c ch
 To run this script to load the psg data for DS_10 Night 2, run
 
 ```bash
-python read_psg_data.py PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv psg_output
+python read_psg_data.py example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv psg_output
 ```
 
 The PSG channels are recorded at different sampling rates, so one CSV is saved per rate (e.g., `DS_10-Sleep-Night2_200Hz.csv`). If you only want certain channels, run
 
 ```bash
-python read_psg_data.py PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv psg_output -c "X Axis" "Y Axis" "Z Axis" "Heart Rate"
+python read_psg_data.py example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv psg_output -c "X Axis" "Y Axis" "Z Axis" "Heart Rate"
 ```
 
 ## Running `rotate_sensors.py`
@@ -65,7 +65,7 @@ python read_psg_data.py PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf PAAWS_Sleep/DS_
 import pandas as pd
 from rotate_sensors import lab_fl_orientation_augmentation
 
-data_path = "PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv"
+data_path = "example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv"
 
 data = pd.read_csv(data_path, skiprows=10).to_numpy()
 rotated_data_np = lab_fl_orientation_augmentation(data, True)
