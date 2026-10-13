@@ -113,6 +113,10 @@ def add_sleep_label(psg: pd.DataFrame, label: pd.DataFrame) -> pd.DataFrame:
 
     label = label.sort_values("Start Time").reset_index(drop=True)
 
+    # Thanks Umberto for identifying the timestamp error
+    for col in ["Start Time", "End Time"]:
+        label[col] = label[col].astype(psg["Timestamp"].dtype)
+
     # Match each sample to the latest sleep stage starting before it.
     merged = pd.merge_asof(
         psg[["Timestamp"]],
