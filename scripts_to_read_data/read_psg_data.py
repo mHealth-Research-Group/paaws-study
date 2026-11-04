@@ -173,7 +173,7 @@ def data_to_csv(
 
     # Read sleep scored data and retrieve only sleep stages of interest.
     sleep_label = pd.read_csv(sleep_path, parse_dates=["Start Time", "End Time"])
-    mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages.
+    mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages. If you only want to know sleep/wake, use sleep_2 instead.
     sleep_label["SLEEP_STAGE"] = [mapping.get(x, None) for x in sleep_label["Event"]]
 
     # Remove non-stage events (e.g., snores, arousals) that overlap the stages.

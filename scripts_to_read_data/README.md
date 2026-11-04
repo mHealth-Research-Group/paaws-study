@@ -20,6 +20,22 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 **NOTE**: the `.zip` files in these folders were compressed with bzip2. On Windows, users need a third-party tool like [7-Zip](https://www.7-zip.org/) to extract them. macOS and Linux users can use the native `unzip`.
 
+Before running the examples below, extract the example data from the `scripts_to_read_data/` folder. On macOS/Linux, run
+
+```bash
+unzip example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.zip -d example_data/PAAWS_FreeLiving/DS_10/accel
+unzip example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.zip -d example_data/PAAWS_Sleep/DS_10
+unzip example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.zip -d example_data/PAAWS_Sleep/DS_10
+```
+
+On Windows, with 7-Zip installed (and `7z` on your `PATH`; otherwise use the full path, e.g., `"C:\Program Files\7-Zip\7z.exe"`), run
+
+```bash
+7z x example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.zip -oexample_data/PAAWS_FreeLiving/DS_10/accel
+7z x example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.zip -oexample_data/PAAWS_Sleep/DS_10
+7z x example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.zip -oexample_data/PAAWS_Sleep/DS_10
+```
+
 
 ## Reading IMU data with activity label and sleep stages files
 We provide `read_actigraph_data.py`, which is a standalone Python script that reads raw ActiGraph `.csv` files (e.g., accelerometer, IMU, or HR data), the associated activity label file, and optionally the sleep scored events files. This script writes raw data with timestamp, activity labels, and sleep stages into one CSV file.
@@ -74,10 +90,10 @@ We provide some additional utility scripts that may be helpful for researchers.
 import pandas as pd
 from rotate_sensors import lab_fl_orientation_augmentation
 
-data_path = "path/to/DS_XX-Lab-RightWaistAnterior.csv"  # SimFL+Lab waist sensor
+data_path = "example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-RightWaistAnterior.csv"  # SimFL+Lab waist sensor
 
 data = pd.read_csv(data_path, skiprows=10).to_numpy()
 rotated_data_np = lab_fl_orientation_augmentation(data, True)
 rotated_data_df = pd.DataFrame(rotated_data_np, columns=["Rotated_X", "Rotated_Y", "Z",])
-rotated_data_df.to_csv("./DS_XX-Lab-RightWaistAnterior_ROTATED.csv", index=False)
+rotated_data_df.to_csv("./DS_10-Lab-RightWaistAnterior_ROTATED.csv", index=False)
 ```
