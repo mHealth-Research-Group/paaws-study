@@ -74,10 +74,10 @@ We provide some additional utility scripts that may be helpful for researchers.
 import pandas as pd
 from rotate_sensors import lab_fl_orientation_augmentation
 
-data_path = "example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv"
+data_path = "path/to/DS_XX-Lab-RightWaistAnterior.csv"  # SimFL+Lab waist sensor
 
 data = pd.read_csv(data_path, skiprows=10).to_numpy()
 rotated_data_np = lab_fl_orientation_augmentation(data, True)
-rotated_data_df = pd.DataFrame(data, columns=["Rotated_X", "Rotated_Y", "Z",])
-rotated_data_df.to_csv("./DS_10-Lab-LeftWristTop_ROTATED.csv", index=False)
+rotated_data_df = pd.DataFrame(rotated_data_np, columns=["Rotated_X", "Rotated_Y", "Z",])
+rotated_data_df.to_csv("./DS_XX-Lab-RightWaistAnterior_ROTATED.csv", index=False)
 ```
