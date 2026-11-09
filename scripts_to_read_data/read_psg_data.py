@@ -107,7 +107,7 @@ def add_sleep_label(psg: pd.DataFrame, label: pd.DataFrame) -> pd.DataFrame:
     Returns
     ----------
     psg : pd.DataFrame
-        DataFrame with added 'Sleep_Stage' column containing the sleep stage
+        DataFrame with added 'Sleep Stage' column containing the sleep stage
         from the labeled data.
     """
 
@@ -132,7 +132,7 @@ def add_sleep_label(psg: pd.DataFrame, label: pd.DataFrame) -> pd.DataFrame:
     stage[psg["Timestamp"] < label["Start Time"].iloc[0]] = "Before_Data_Collection"
     stage[psg["Timestamp"] > label["End Time"].iloc[-1]] = "After_Data_Collection"
 
-    psg["Sleep_Stage"] = stage.values
+    psg["Sleep Stage"] = stage.values
 
     return psg
 
@@ -142,6 +142,7 @@ def data_to_csv(
     sleep_path: str,
     output_dir: str,
     channels: List[str] = None,
+    sleep_mapping: str = "sleep_5",
 ) -> None:
     """
     Combines psg data with sleep stage labels and saves the result as one CSV
@@ -162,6 +163,10 @@ def data_to_csv(
     channels : list of strings, optional
         Names of the channels to save. If None, save all channels.
 
+    sleep_mapping : string
+        Name of the mapping scheme in utils.MAPPING_SCHEMES used to map the
+        sleep scored events to sleep stages (default: 'sleep_5').
+
     Returns
     ----------
     None. psg data with timestamp and labels is saved to the specified output
@@ -173,7 +178,7 @@ def data_to_csv(
 
     # Read sleep scored data and retrieve only sleep stages of interest.
     sleep_label = pd.read_csv(sleep_path, parse_dates=["Start Time", "End Time"])
-    mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages. If you only want to know sleep/wake, use sleep_2 instead.
+    mapping = MAPPING_SCHEMES[sleep_mapping]
     sleep_label["SLEEP_STAGE"] = [mapping.get(x, None) for x in sleep_label["Event"]]
 
     # Remove non-stage events (e.g., snores, arousals) that overlap the stages.
@@ -207,12 +212,25 @@ if __name__ == "__main__":
         default=None,
         help="(Optional) Channels to save. Defaults to all channels.",
     )
+    parser.add_argument(
+        "-m",
+        "--sleep_mapping",
+        default="sleep_5",
+        choices=[k for k in MAPPING_SCHEMES if k.startswith("sleep")],
+        help="(Optional) Mapping scheme for the sleep stages (default: sleep_5).",
+    )
 
     # Read command line arguments.
     args = parser.parse_args()
 
     print("***** Reading and processing data. This may take a few minutes. *****")
 
-    data_to_csv(args.edf_path, args.sleep_path, args.output_dir, args.channels)
+    data_to_csv(
+        args.edf_path,
+        args.sleep_path,
+        args.output_dir,
+        args.channels,
+        args.sleep_mapping,
+    )
 
     print(f"***** Data saved to {args.output_dir}. *****")

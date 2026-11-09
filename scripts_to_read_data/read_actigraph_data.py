@@ -84,21 +84,21 @@ def add_label_to_actigraph(actigraph, label, sleep: bool = False) -> pd.DataFram
 
     sleep : bool
         If True, the label data is a sleep scored events file and the sleep
-        stages are added to a 'Sleep_Stage' column.
+        stages are added to a 'Sleep Stage' column.
 
     Returns
     ----------
     actigraph : pd.DataFrame
-        DataFrame with added 'Activity' (or 'Sleep_Stage') column containing
+        DataFrame with added 'Activity Label' (or 'Sleep Stage') column containing
         the activity class (or sleep stage) from the labeled data.
     """
 
     # Column names (start, stop, class, output) for the activity and sleep labels.
-    label_columns = {
-        False: ("START_TIME", "STOP_TIME", "ACTIVITY_CLASS", "Activity"),
-        True: ("Start Time", "End Time", "SLEEP_STAGE", "Sleep_Stage"),
+    label_columns_is_sleep = {
+        False: ("START_TIME", "STOP_TIME", "ACTIVITY_CLASS", "Activity Label"),
+        True: ("Start Time", "End Time", "SLEEP_STAGE", "Sleep Stage"),
     }
-    start_col, stop_col, class_col, out_col = label_columns[sleep]
+    start_col, stop_col, class_col, out_col = label_columns_is_sleep[sleep]
 
     label = label.sort_values(start_col).reset_index(drop=True)
     actigraph[out_col] = None
@@ -129,6 +129,8 @@ def data_to_csv(
     label_path: str,
     output_path: str,
     sleep_paths: List[str] = None,
+    label_mapping: str = "lab_fl_5",
+    sleep_mapping: str = "sleep_5",
 ) -> None:
     """
     Combines actigraph data with activity labels and saves the result as a CSV.
@@ -146,7 +148,15 @@ def data_to_csv(
 
     sleep_paths : list of strings, optional
         Paths to the sleep scored events files (e.g., one per night). If given,
-        the sleep stages are added to a 'Sleep_Stage' column.
+        the sleep stages are added to a 'Sleep Stage' column.
+
+    label_mapping : string
+        Name of the mapping scheme in utils.MAPPING_SCHEMES used to map the
+        activity types to activity classes (default: 'lab_fl_5').
+
+    sleep_mapping : string
+        Name of the mapping scheme in utils.MAPPING_SCHEMES used to map the
+        sleep scored events to sleep stages (default: 'sleep_5').
 
     Returns
     ----------
@@ -159,7 +169,7 @@ def data_to_csv(
 
     # Read label data and map the activity types to the activity classes.
     label = pd.read_csv(label_path, parse_dates=["START_TIME", "STOP_TIME"])
-    mapping = MAPPING_SCHEMES["lab_fl_5"]  #  Default to 5 activity classes.
+    mapping = MAPPING_SCHEMES[label_mapping]
     label["ACTIVITY_CLASS"] = [mapping.get(x, None) for x in label["PA_TYPE"]]
 
     actigraph = add_label_to_actigraph(actigraph, label)
@@ -171,7 +181,7 @@ def data_to_csv(
             [pd.read_csv(p, parse_dates=["Start Time", "End Time"]) for p in sleep_paths],
             ignore_index=True,
         )
-        mapping = MAPPING_SCHEMES["sleep_5"]  # Default to 5 sleep stages.
+        mapping = MAPPING_SCHEMES[sleep_mapping]
         sleep_label["SLEEP_STAGE"] = [mapping.get(x, None) for x in sleep_label["Event"]]
 
         # Remove non-stage events (e.g., snores, arousals) that overlap the stages.
@@ -198,12 +208,35 @@ if __name__ == "__main__":
         default=None,
         help="(Optional) Path(s) to the sleep scored events file(s), e.g., one per night.",
     )
+    sleep_schemes = [k for k in MAPPING_SCHEMES if k.startswith("sleep")]
+    label_schemes = [k for k in MAPPING_SCHEMES if k not in sleep_schemes]
+    parser.add_argument(
+        "-l",
+        "--label_mapping",
+        default="lab_fl_5",
+        choices=label_schemes,
+        help="(Optional) Mapping scheme for the activity labels (default: lab_fl_5).",
+    )
+    parser.add_argument(
+        "-m",
+        "--sleep_mapping",
+        default="sleep_5",
+        choices=sleep_schemes,
+        help="(Optional) Mapping scheme for the sleep stages (default: sleep_5).",
+    )
 
     # Read command line arguments.
     args = parser.parse_args()
 
     print("***** Reading and processing data. This may take a few minutes. *****")
 
-    data_to_csv(args.actigraph_path, args.label_path, args.output_path, args.sleep_path)
+    data_to_csv(
+        args.actigraph_path,
+        args.label_path,
+        args.output_path,
+        args.sleep_path,
+        args.label_mapping,
+        args.sleep_mapping,
+    )
 
     print(f"***** Data saved to {args.output_path}. *****")
