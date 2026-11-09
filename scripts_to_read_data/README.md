@@ -18,22 +18,23 @@ We provide three scripts to help with PAAWS data preprocessing: one for merging 
 
 `example_data/PAAWS_Sleep/`: sample Sleep data for DS_10 used to demonstrate how the scripts work.
 
-**NOTE**: the `.zip` files in these folders were compressed with bzip2. On Windows, users need a third-party tool like [7-Zip](https://www.7-zip.org/) to extract them. macOS and Linux users can use the native `unzip`.
 
-Before running the examples below, extract the example data from the `scripts_to_read_data/` folder. On macOS/Linux, run
+## Installing required packages
+Our scripts are written with Python 3 in mind and were tested using Python 3.12. To install the necessary packages, run the following command from the `scripts_to_read_data` folder:
 
 ```bash
-unzip example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.zip -d example_data/PAAWS_FreeLiving/DS_10/accel
-unzip example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.zip -d example_data/PAAWS_Sleep/DS_10
-unzip example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.zip -d example_data/PAAWS_Sleep/DS_10
+pip install -r requirements.txt
 ```
 
-On Windows, with 7-Zip installed (and `7z` on your `PATH`; otherwise use the full path, e.g., `"C:\Program Files\7-Zip\7z.exe"`), run
+## Extracting example data to use with the provided scripts
+Some of the larger files in these folders are compressed as bzip2 `.tar.bz2` archives. They can be extracted with the built-in `tar` command on macOS, Linux, and Windows 10 or later (Command Prompt or PowerShell), so no extra software is needed.
+
+To extract the example data, run all following commands from the `scripts_to_read_data` folder:
 
 ```bash
-7z x example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.zip -oexample_data/PAAWS_FreeLiving/DS_10/accel
-7z x example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.zip -oexample_data/PAAWS_Sleep/DS_10
-7z x example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.zip -oexample_data/PAAWS_Sleep/DS_10
+tar -xf example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.tar.bz2 -C example_data/PAAWS_FreeLiving/DS_10/accel
+tar -xf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.tar.bz2 -C example_data/PAAWS_Sleep/DS_10
+tar -xf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.tar.bz2 -C example_data/PAAWS_Sleep/DS_10
 ```
 
 
