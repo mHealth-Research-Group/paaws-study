@@ -33,7 +33,13 @@ To extract the example data, run all following commands from the `scripts_to_rea
 
 ```bash
 tar -xf example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv.tar.bz2 -C example_data/PAAWS_FreeLiving/DS_10/accel
+```
+
+```bash
 tar -xf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1.edf.tar.bz2 -C example_data/PAAWS_Sleep/DS_10
+```
+
+```bash
 tar -xf example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2.edf.tar.bz2 -C example_data/PAAWS_Sleep/DS_10
 ```
 
