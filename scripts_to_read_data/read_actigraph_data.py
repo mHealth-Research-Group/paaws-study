@@ -180,6 +180,7 @@ def data_to_csv(
         actigraph = add_label_to_actigraph(actigraph, sleep_label, sleep=True)
 
     # Save the merged data to a CSV file.
+    print(f"***** Saving data to {output_path}. This may take a few minutes. *****")
     actigraph.to_csv(output_path, index=False)
 
 
