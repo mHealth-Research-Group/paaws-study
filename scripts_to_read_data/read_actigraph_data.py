@@ -3,7 +3,7 @@
 Sample code to read the accelerometer data and labels into a single dataframe.
 =========================================
 Authors: Hoan Tran and Umberto Mazzucchelli
-Email: tran[dot]hoan1[at]northeastern[dot]edu (train.hoan1@northeastern.edu)
+Email: tran[dot]hoan1[at]northeastern[dot]edu (tran.hoan1@northeastern.edu)
 """
 
 import argparse
