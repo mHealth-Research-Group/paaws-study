@@ -61,10 +61,10 @@ For example, to read in DS_10's left wrist top accelerometer sensor and the corr
 python read_actigraph_data.py example_data/PAAWS_SimFL_Lab/DS_10/accel/DS_10-Lab-LeftWristTop.csv example_data/PAAWS_SimFL_Lab/DS_10/label/DS_10-Lab-label.csv DS_10-Lab-LeftWristTop-WithActivityLabel.csv
 ```
 
-For participants with scored sleep stages, users need to pass the optional `-s` (`--sleep_path`) argument. This argument takes one or more sleep scored events files (e.g., one per night) and adds the sleep stages (by default when `-m` argument not specified, sleep stages are Wake, N1, N2, N3, REM) to a `Sleep Stage` column. For example, read DS_10's left wrist data with the activity label as well as sleep stages, and then write to `IMU.csv` (with columns `Accelerometer X`, `Accelerometer Y`, `Accelerometer Z`, `Timestamp`, `Activity Label`, and `Sleep Stage`), run
+For participants with scored sleep stages, users need to pass the optional `-s` (`--sleep_path`) argument. This argument takes one or more sleep scored events files (e.g., one per night) and adds the sleep stages (by default when `-m` argument not specified, sleep stages are Wake, N1, N2, N3, REM) to a `Sleep Stage` column. For example, read DS_10's left wrist data with the activity label as well as sleep stages, and then write to `DS_10-Free-LeftWrist-WithActivityLabel.csv` (with columns `Accelerometer X`, `Accelerometer Y`, `Accelerometer Z`, `Timestamp`, `Activity Label`, and `Sleep Stage`), run
 
 ```bash
-python read_actigraph_data.py example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv example_data/PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv IMU.csv -s example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
+python read_actigraph_data.py example_data/PAAWS_FreeLiving/DS_10/accel/DS_10-Free-LeftWrist.csv example_data/PAAWS_FreeLiving/DS_10/label/DS_10-Free-label.csv DS_10-Free-LeftWrist-WithActivityLabel.csv -s example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night1_scored_events.csv example_data/PAAWS_Sleep/DS_10/DS_10-Sleep-Night2_scored_events.csv
 ```
 
 By default, if the `-l` (`--label_mapping`) argument is not specified, the script defaults to using the five-activity mapping scheme `lab_fl_5`. Similarly, if the `-m` (`--sleep_mapping`) argument is not specified, the script defaults to using the five sleep stages mapping scheme `sleep_5`. For details of what mapping schemes are available, please see `utils.py`.
